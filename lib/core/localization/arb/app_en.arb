@@ -1,0 +1,71 @@
+{
+  "@@locale": "en",
+  "appName": "UniDocs",
+
+  "onboardingTitle1": "All your university files in one place",
+  "onboardingTitle2": "Share your notes and lectures easily",
+  "onboardingTitle3": "Fast, verified, and secure search",
+
+  "loginTitle": "Login",
+  "registerTitle": "Create Account",
+  "email": "Email",
+  "password": "Password",
+  "fullName": "Full Name",
+  "university": "University",
+  "login": "Login",
+  "register": "Register",
+  "dontHaveAccount": "Don't have an account?",
+  "alreadyHaveAccount": "Already have an account?",
+
+  "homeGreeting": "Hello 👋",
+  "homeSubtitle": "What do you want to learn today?",
+  "searchHint": "Search for a lecture, book, subject...",
+  "specializations": "Specializations",
+  "latestFiles": "Latest Files",
+
+  "searchTitle": "Search",
+  "filters": "Filters",
+  "sortBy": "Sort by",
+  "sortRecent": "Recent",
+  "sortPopular": "Most downloaded",
+
+  "fileDetailsTitle": "File Details",
+  "preview": "Preview",
+  "download": "Download",
+  "share": "Share",
+  "uploader": "Uploader",
+  "views": "Views",
+  "downloads": "Downloads",
+  "version": "Version",
+
+  "profile": "Profile",
+  "downloadHistory": "Download History",
+  "notifications": "Notifications",
+  "settings": "Settings",
+  "requestUploaderAccess": "Request Uploader Access",
+
+  "upload": "Upload File",
+  "uploadProgress": "Uploading...",
+  "myFiles": "My Files",
+  "pendingFiles": "Pending",
+  "approvedFiles": "Approved",
+  "rejectedFiles": "Rejected",
+  "rejectionReason": "Rejection Reason",
+
+  "moderationDashboard": "Moderation Dashboard",
+  "reviewFile": "Review File",
+  "approve": "Approve",
+  "reject": "Reject",
+  "lockNotice": "This file is currently under review by another moderator.",
+
+  "adminDashboard": "Admin Dashboard",
+  "users": "Users",
+  "statistics": "Statistics",
+  "auditLogs": "Audit Logs",
+
+  "errorGeneric": "Something went wrong, please try again.",
+  "errorNoInternet": "No internet connection.",
+  "emptyStateNoResults": "No results found.",
+  "retry": "Retry",
+  "pullToRefresh": "Pull to refresh"
+}

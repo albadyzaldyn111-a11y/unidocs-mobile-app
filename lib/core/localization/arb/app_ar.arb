@@ -1,0 +1,72 @@
+{
+  "@@locale": "ar",
+  "appName": "UniDocs",
+  "@appName": {"description": "App name shown on splash and app bar"},
+
+  "onboardingTitle1": "كل ملفاتك الجامعية في مكان واحد",
+  "onboardingTitle2": "شارك ملازمك ومحاضراتك بسهولة",
+  "onboardingTitle3": "بحث سريع، معتمد، وآمن",
+
+  "loginTitle": "تسجيل الدخول",
+  "registerTitle": "إنشاء حساب",
+  "email": "البريد الإلكتروني",
+  "password": "كلمة المرور",
+  "fullName": "الاسم الكامل",
+  "university": "الجامعة",
+  "login": "دخول",
+  "register": "إنشاء حساب",
+  "dontHaveAccount": "ليس لديك حساب؟",
+  "alreadyHaveAccount": "لديك حساب بالفعل؟",
+
+  "homeGreeting": "مرحبًا 👋",
+  "homeSubtitle": "ماذا تريد أن تتعلم اليوم؟",
+  "searchHint": "ابحث عن محاضرة، كتاب، مادة...",
+  "specializations": "التخصصات",
+  "latestFiles": "أحدث الملفات",
+
+  "searchTitle": "بحث",
+  "filters": "الفلاتر",
+  "sortBy": "ترتيب حسب",
+  "sortRecent": "الأحدث",
+  "sortPopular": "الأكثر تحميلًا",
+
+  "fileDetailsTitle": "تفاصيل الملف",
+  "preview": "معاينة",
+  "download": "تحميل",
+  "share": "مشاركة",
+  "uploader": "رافع الملف",
+  "views": "المشاهدات",
+  "downloads": "التحميلات",
+  "version": "الإصدار",
+
+  "profile": "الملف الشخصي",
+  "downloadHistory": "سجل التحميلات",
+  "notifications": "الإشعارات",
+  "settings": "الإعدادات",
+  "requestUploaderAccess": "طلب صلاحية رفع الملفات",
+
+  "upload": "رفع ملف",
+  "uploadProgress": "جارٍ الرفع...",
+  "myFiles": "ملفاتي",
+  "pendingFiles": "قيد المراجعة",
+  "approvedFiles": "المعتمدة",
+  "rejectedFiles": "المرفوضة",
+  "rejectionReason": "سبب الرفض",
+
+  "moderationDashboard": "لوحة المراجعة",
+  "reviewFile": "مراجعة الملف",
+  "approve": "اعتماد",
+  "reject": "رفض",
+  "lockNotice": "هذا الملف قيد المراجعة بواسطة مشرف آخر.",
+
+  "adminDashboard": "لوحة التحكم",
+  "users": "المستخدمون",
+  "statistics": "الإحصائيات",
+  "auditLogs": "سجل العمليات",
+
+  "errorGeneric": "حدث خطأ ما، حاول مرة أخرى.",
+  "errorNoInternet": "لا يوجد اتصال بالإنترنت.",
+  "emptyStateNoResults": "لا توجد نتائج.",
+  "retry": "إعادة المحاولة",
+  "pullToRefresh": "اسحب للتحديث"
+}

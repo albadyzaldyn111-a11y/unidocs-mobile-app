@@ -1,0 +1,9 @@
+gradle-wrapper.jar
+.gradle/
+/local.properties
+GeneratedPluginRegistrant.java
+.cxx/
+*.apk
+*.ap_
+*.aab
+key.properties

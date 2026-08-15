@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import '../../features/admin/presentation/admin_audit_settings_screens.dart';
 import '../../features/admin/presentation/admin_dashboard_screen.dart';
 import '../../features/admin/presentation/admin_users_screen.dart';
-import '../../features/admin/presentation/taxonomy_management_screen.dart';
 import '../../features/auth/presentation/auth_controller.dart';
 import '../../features/auth/presentation/login_screen.dart';
 import '../../features/auth/presentation/register_screen.dart';
@@ -18,7 +17,6 @@ import '../../features/home/presentation/splash_screen.dart';
 import '../../features/moderation/presentation/moderation_dashboard_screen.dart';
 import '../../features/notifications/presentation/notifications_screen.dart';
 import '../../features/profile/presentation/app_settings_screen.dart';
-import '../../features/profile/presentation/contact_support_screen.dart';
 import '../../features/profile/presentation/download_history_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/upload/presentation/my_files_screen.dart';
@@ -38,10 +36,9 @@ final routerProvider = Provider<GoRouter>((ref) {
     refreshListenable: authNotifier,
     redirect: (context, state) {
       final auth = ref.read(authControllerProvider);
-      final loggingIn = state.matchedLocation == '/login' ||
-          state.matchedLocation == '/register';
-      final isSplashOrOnboarding = state.matchedLocation == '/splash' ||
-          state.matchedLocation == '/onboarding';
+      final loggingIn = state.matchedLocation == '/login' || state.matchedLocation == '/register';
+      final isSplashOrOnboarding =
+          state.matchedLocation == '/splash' || state.matchedLocation == '/onboarding';
 
       if (!auth.isAuthenticated && !loggingIn && !isSplashOrOnboarding) {
         return '/login';
@@ -50,8 +47,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       if (auth.isAuthenticated) {
         final user = auth.user!;
         final loc = state.matchedLocation;
-        final needsModerator =
-            loc.startsWith('/moderation') || loc.startsWith('/upload-requests');
+        final needsModerator = loc.startsWith('/moderation') || loc.startsWith('/upload-requests');
         final needsAdmin = loc.startsWith('/admin');
         if (needsModerator && !user.canModerate) return '/home';
         if (needsAdmin && !user.isAdmin) return '/home';
@@ -62,77 +58,41 @@ final routerProvider = Provider<GoRouter>((ref) {
       return null;
     },
     routes: [
-      GoRoute(
-          path: '/splash', builder: (context, state) => const SplashScreen()),
-      GoRoute(
-          path: '/onboarding',
-          builder: (context, state) => const OnboardingScreen()),
+      GoRoute(path: '/splash', builder: (context, state) => const SplashScreen()),
+      GoRoute(path: '/onboarding', builder: (context, state) => const OnboardingScreen()),
       GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
-      GoRoute(
-          path: '/register',
-          builder: (context, state) => const RegisterScreen()),
+      GoRoute(path: '/register', builder: (context, state) => const RegisterScreen()),
       GoRoute(path: '/home', builder: (context, state) => const HomeScreen()),
-      GoRoute(
-          path: '/search', builder: (context, state) => const SearchScreen()),
+      GoRoute(path: '/search', builder: (context, state) => const SearchScreen()),
       GoRoute(
         path: '/files/:id',
-        builder: (context, state) =>
-            FileDetailsScreen(fileId: state.pathParameters['id']!),
+        builder: (context, state) => FileDetailsScreen(fileId: state.pathParameters['id']!),
       ),
       GoRoute(
         path: '/files/:id/preview',
-        builder: (context, state) =>
-            PdfPreviewScreen(fileId: state.pathParameters['id']!),
+        builder: (context, state) => PdfPreviewScreen(fileId: state.pathParameters['id']!),
       ),
-      GoRoute(
-          path: '/notifications',
-          builder: (context, state) => const NotificationsScreen()),
-      GoRoute(
-          path: '/profile', builder: (context, state) => const ProfileScreen()),
-      GoRoute(
-          path: '/upload', builder: (context, state) => const UploadScreen()),
-      GoRoute(
-          path: '/my-files',
-          builder: (context, state) => const MyFilesScreen()),
-      GoRoute(
-          path: '/upload-request',
-          builder: (context, state) => const UploadRequestScreen()),
-      GoRoute(
-          path: '/download-history',
-          builder: (context, state) => const DownloadHistoryScreen()),
-      GoRoute(
-          path: '/settings',
-          builder: (context, state) => const AppSettingsScreen()),
-      GoRoute(
-          path: '/contact',
-          builder: (context, state) => const ContactSupportScreen()),
-      GoRoute(
-          path: '/moderation',
-          builder: (context, state) => const ModerationDashboardScreen()),
-      GoRoute(
-          path: '/upload-requests',
-          builder: (context, state) => const UploadRequestsListScreen()),
+      GoRoute(path: '/notifications', builder: (context, state) => const NotificationsScreen()),
+      GoRoute(path: '/profile', builder: (context, state) => const ProfileScreen()),
+      GoRoute(path: '/upload', builder: (context, state) => const UploadScreen()),
+      GoRoute(path: '/my-files', builder: (context, state) => const MyFilesScreen()),
+      GoRoute(path: '/upload-request', builder: (context, state) => const UploadRequestScreen()),
+      GoRoute(path: '/download-history', builder: (context, state) => const DownloadHistoryScreen()),
+      GoRoute(path: '/settings', builder: (context, state) => const AppSettingsScreen()),
+      GoRoute(path: '/moderation', builder: (context, state) => const ModerationDashboardScreen()),
+      GoRoute(path: '/upload-requests', builder: (context, state) => const UploadRequestsListScreen()),
       GoRoute(
         path: '/requests/:id',
-        builder: (context, state) =>
-            RequestDetailsScreen(requestId: state.pathParameters['id']!),
+        builder: (context, state) => RequestDetailsScreen(requestId: state.pathParameters['id']!),
       ),
+      GoRoute(path: '/admin', builder: (context, state) => const AdminDashboardScreen()),
+      GoRoute(path: '/admin/users', builder: (context, state) => const AdminUsersScreen()),
       GoRoute(
-          path: '/admin',
-          builder: (context, state) => const AdminDashboardScreen()),
-      GoRoute(
-          path: '/admin/users',
-          builder: (context, state) => const AdminUsersScreen()),
-      GoRoute(
-          path: '/admin/taxonomy',
-          builder: (context, state) => const TaxonomyManagementScreen()),
-
-      GoRoute(
-          path: '/admin/audit-log',
-          builder: (context, state) => const AdminAuditLogScreen()),
-      GoRoute(
-          path: '/admin/settings',
-          builder: (context, state) => const AdminSettingsScreen()),
+        path: '/admin/users/:id',
+        builder: (context, state) => AdminUserDetailsScreen(userId: state.pathParameters['id']!),
+      ),
+      GoRoute(path: '/admin/audit-log', builder: (context, state) => const AdminAuditLogScreen()),
+      GoRoute(path: '/admin/settings', builder: (context, state) => const AdminSettingsScreen()),
     ],
   );
 });

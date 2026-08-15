@@ -40,7 +40,6 @@ class AuthController extends Notifier<AuthState> {
     state = state.copyWith(isLoading: true);
     try {
       final user = await ref.read(authApiProvider).me();
-      print('DEBUG: User loaded: ${user.email}, Role: ${user.role}, IsAdmin: ${user.isAdmin}');
       state = state.copyWith(user: user, isLoading: false);
     } on DioException catch (e) {
       state = state.copyWith(isLoading: false, error: e.error as AppException?);
@@ -53,7 +52,6 @@ class AuthController extends Notifier<AuthState> {
       final token = await ref.read(authApiProvider).login(email: email, password: password);
       await ref.read(secureStorageProvider).saveToken(token);
       final user = await ref.read(authApiProvider).me();
-      print('DEBUG: User logged in: ${user.email}, Role: ${user.role}, IsAdmin: ${user.isAdmin}');
       state = state.copyWith(user: user, isLoading: false);
       return true;
     } on DioException catch (e) {
