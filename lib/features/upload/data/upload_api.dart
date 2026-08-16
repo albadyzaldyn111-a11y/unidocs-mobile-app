@@ -26,7 +26,7 @@ class UploadApi {
     });
 
     final response = await _ref.read(apiClientProvider).post(
-      '/files/upload',
+      '/api/files/upload',
       data: formData,
       onSendProgress: onProgress,
     );
@@ -38,7 +38,7 @@ class UploadApi {
 
   Future<List<FileItem>> myFiles({String? status}) async {
     final response = await _ref.read(apiClientProvider).get(
-      '/files/mine/list',
+      '/api/files/mine/list',
       queryParameters: {if (status != null) 'status': status},
     );
     final data = response.data is List ? response.data as List : (response.data['items'] as List? ?? const []);

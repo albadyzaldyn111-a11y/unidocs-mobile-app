@@ -10,7 +10,7 @@ import 'error_interceptor.dart';
 /// --dart-define=API_BASE_URL=... (see README "Build Configuration").
 const String _defaultBaseUrl = String.fromEnvironment(
   'API_BASE_URL',
-  defaultValue: 'http://10.0.2.2:8000', // Android emulator loopback to host
+  defaultValue: 'https://unidocs-backend-api.onrender.com',
 );
 
 final secureStorageProvider = Provider<SecureStorage>((ref) {
