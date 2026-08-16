@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:path/path.dart' as p;
 
 import '../../../core/network/api_client.dart';
+import '../../../core/services/download_service.dart';
 import '../../../core/theme/app_tokens.dart';
 import '../../../core/widgets/primary_button.dart';
 import '../../../core/widgets/state_views.dart';
@@ -17,14 +19,22 @@ final fileDetailsProvider =
   return ref.watch(filesApiProvider).details(fileId, user!.universityId);
 });
 
-class FileDetailsScreen extends ConsumerWidget {
+class FileDetailsScreen extends ConsumerStatefulWidget {
   const FileDetailsScreen({super.key, required this.fileId});
   final String fileId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<FileDetailsScreen> createState() => _FileDetailsScreenState();
+}
+
+class _FileDetailsScreenState extends ConsumerState<FileDetailsScreen> {
+  bool _isDownloading = false;
+  double _downloadProgress = 0;
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final detailsAsync = ref.watch(fileDetailsProvider(fileId));
+    final detailsAsync = ref.watch(fileDetailsProvider(widget.fileId));
     final user = ref.watch(authControllerProvider).user;
 
     return Scaffold(
@@ -84,40 +94,68 @@ class FileDetailsScreen extends ConsumerWidget {
               const SizedBox(height: AppSpacing.xl),
               PrimaryButton(
                 label: 'معاينة',
-                onPressed: () => context.push('/files/$fileId/preview'),
+                onPressed: () => context.push('/files/${widget.fileId}/preview'),
               ),
               const SizedBox(height: AppSpacing.sm),
-              OutlinedButton.icon(
-                onPressed: user == null
-                    ? null
-                    : () async {
-                        final token = await ref.read(secureStorageProvider).readToken();
-                        final url = ref.read(filesApiProvider).downloadUrl(fileId, user.universityId, token: token);
-                        final uri = Uri.parse(url);
-                        if (await canLaunchUrl(uri)) {
-                          await launchUrl(uri, mode: LaunchMode.externalApplication);
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('بدأ التحميل في المتصفح...')),
+              if (_isDownloading)
+                Column(
+                  children: [
+                    LinearProgressIndicator(value: _downloadProgress, borderRadius: BorderRadius.circular(10)),
+                    const SizedBox(height: 8),
+                    Text('جاري التحميل... ${(_downloadProgress * 100).toInt()}%', style: theme.textTheme.bodySmall),
+                  ],
+                )
+              else
+                OutlinedButton.icon(
+                  onPressed: user == null
+                      ? null
+                      : () async {
+                          setState(() {
+                            _isDownloading = true;
+                            _downloadProgress = 0;
+                          });
+                          try {
+                            final token = await ref.read(secureStorageProvider).readToken();
+                            final url = ref.read(filesApiProvider).downloadUrl(widget.fileId, user.universityId, token: token);
+                            
+                            // Determine filename with extension
+                            final extension = file.title.contains('.') ? '' : '.pdf';
+                            final fileName = '${file.title}$extension';
+
+                            final path = await ref.read(downloadServiceProvider).downloadFile(
+                              url: url,
+                              fileName: fileName,
+                              onProgress: (received, total) {
+                                if (total > 0) {
+                                  setState(() => _downloadProgress = received / total);
+                                }
+                              },
                             );
+
+                            if (mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('تم الحفظ في: $path')),
+                              );
+                            }
+                          } catch (e) {
+                            if (mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('فشل التحميل المباشر. تحقق من الصلاحيات.')),
+                              );
+                            }
+                          } finally {
+                            if (mounted) setState(() => _isDownloading = false);
                           }
-                        } else {
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('تعذر فتح رابط التحميل')),
-                            );
-                          }
-                        }
-                      },
-                icon: const Icon(Icons.download_outlined),
-                label: const Text('تحميل'),
-              ),
+                        },
+                  icon: const Icon(Icons.download_outlined),
+                  label: const Text('تحميل مباشر للجهاز'),
+                ),
               const SizedBox(height: AppSpacing.sm),
               OutlinedButton.icon(
                 onPressed: user == null
                     ? null
                     : () {
-                        final url = ref.read(filesApiProvider).downloadUrl(fileId, user.universityId);
+                        final url = ref.read(filesApiProvider).downloadUrl(widget.fileId, user.universityId);
                         Share.share('${file.title}\n$url');
                       },
                 icon: const Icon(Icons.share_outlined),
@@ -129,7 +167,7 @@ class FileDetailsScreen extends ConsumerWidget {
         loading: () => const LoadingView(),
         error: (e, st) => ErrorStateView(
           message: 'تعذر تحميل تفاصيل الملف',
-          onRetry: () => ref.invalidate(fileDetailsProvider(fileId)),
+          onRetry: () => ref.invalidate(fileDetailsProvider(widget.fileId)),
         ),
       ),
     );

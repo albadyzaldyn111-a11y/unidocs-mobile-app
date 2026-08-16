@@ -5,6 +5,7 @@ import '../../../core/errors/app_exception.dart';
 import '../../../core/network/api_client.dart';
 import '../data/auth_api.dart';
 import '../domain/app_user.dart';
+import '../../../core/notifications/background_notification_service.dart';
 
 final authApiProvider = Provider<AuthApi>((ref) => AuthApi(ref.watch(apiClientProvider)));
 
@@ -41,6 +42,7 @@ class AuthController extends Notifier<AuthState> {
     try {
       final user = await ref.read(authApiProvider).me();
       state = state.copyWith(user: user, isLoading: false);
+      BackgroundNotificationService.instance.startPolling();
     } on DioException catch (e) {
       state = state.copyWith(isLoading: false, error: e.error as AppException?);
     }
@@ -53,6 +55,7 @@ class AuthController extends Notifier<AuthState> {
       await ref.read(secureStorageProvider).saveToken(token);
       final user = await ref.read(authApiProvider).me();
       state = state.copyWith(user: user, isLoading: false);
+      BackgroundNotificationService.instance.startPolling();
       return true;
     } on DioException catch (e) {
       state = state.copyWith(isLoading: false, error: e.error as AppException?);
@@ -94,6 +97,7 @@ class AuthController extends Notifier<AuthState> {
   Future<void> logout() async {
     await ref.read(secureStorageProvider).clear();
     state = state.copyWith(clearUser: true);
+    BackgroundNotificationService.instance.stopPolling();
   }
 }
 

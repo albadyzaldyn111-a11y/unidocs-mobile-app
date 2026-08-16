@@ -6,9 +6,20 @@ import 'core/router/app_router.dart';
 import 'core/notifications/notification_polling_service.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/app_preferences.dart';
+import 'core/notifications/background_notification_service.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Save base URL for background tasks
+  final prefs = await SharedPreferences.getInstance();
+  const baseUrl = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue: 'https://unidocs-backend-api.onrender.com',
+  );
+  await prefs.setString('api_base_url', baseUrl);
+
+  await BackgroundNotificationService.instance.initialize();
   runApp(const ProviderScope(child: UniDocsApp()));
 }
 
