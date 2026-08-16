@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-import 'package:unidocs_mobile/core/theme/app_tokens.dart';
-import 'package:unidocs_mobile/core/widgets/primary_button.dart';
-import 'package:unidocs_mobile/core/widgets/state_views.dart';
+import '../../../core/network/api_client.dart';
+import '../../../core/theme/app_tokens.dart';
+import '../../../core/widgets/primary_button.dart';
+import '../../../core/widgets/state_views.dart';
 import '../../auth/presentation/auth_controller.dart';
-import 'package:unidocs_mobile/features/files/data/files_api.dart';
+import '../data/files_api.dart';
 
 final fileDetailsProvider =
     FutureProvider.family.autoDispose<FileDetails, String>((ref, fileId) async {
@@ -35,26 +37,50 @@ class FileDetailsScreen extends ConsumerWidget {
             children: [
               Center(
                 child: Container(
-                  width: 96,
-                  height: 96,
+                  width: 100,
+                  height: 100,
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.primary.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(AppRadius.lg),
+                    color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: theme.colorScheme.primary.withValues(alpha: 0.2)),
                   ),
-                  child: Icon(Icons.picture_as_pdf, size: 48, color: theme.colorScheme.primary),
+                  child: Icon(
+                    file.title.toLowerCase().endsWith('.pdf') ? Icons.picture_as_pdf_rounded : Icons.description_rounded,
+                    size: 50,
+                    color: theme.colorScheme.primary,
+                  ),
                 ),
               ),
-              const SizedBox(height: AppSpacing.lg),
-              Text(file.title, style: theme.textTheme.headlineSmall),
+              const SizedBox(height: AppSpacing.xl),
+              Text(
+                file.title,
+                style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w900),
+                textAlign: TextAlign.center,
+              ),
               if (file.description != null && file.description!.isNotEmpty) ...[
                 const SizedBox(height: AppSpacing.sm),
                 Text(file.description!, style: theme.textTheme.bodyMedium),
               ],
               const SizedBox(height: AppSpacing.lg),
-              _InfoRow(label: 'الإصدار', value: 'v${file.versionNumber}'),
-              _InfoRow(label: 'المشاهدات', value: '${file.viewsCount}'),
-              _InfoRow(label: 'التحميلات', value: '${file.downloadsCount}'),
-              _InfoRow(label: 'الحجم', value: file.sizeLabel),
+              Container(
+                padding: const EdgeInsets.all(AppSpacing.md),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surface,
+                  borderRadius: BorderRadius.circular(AppRadius.lg),
+                  border: Border.all(color: theme.dividerColor.withValues(alpha: 0.1)),
+                ),
+                child: Column(
+                  children: [
+                    _InfoRow(label: 'الإصدار الأكاديمي', value: 'v${file.versionNumber}'),
+                    const Divider(height: 24),
+                    _InfoRow(label: 'إجمالي المشاهدات', value: '${file.viewsCount}'),
+                    const Divider(height: 24),
+                    _InfoRow(label: 'عدد التحميلات', value: '${file.downloadsCount}'),
+                    const Divider(height: 24),
+                    _InfoRow(label: 'حجم الملف', value: file.sizeLabel),
+                  ],
+                ),
+              ),
               const SizedBox(height: AppSpacing.xl),
               PrimaryButton(
                 label: 'معاينة',
@@ -64,10 +90,24 @@ class FileDetailsScreen extends ConsumerWidget {
               OutlinedButton.icon(
                 onPressed: user == null
                     ? null
-                    : () {
-                        final url = ref.read(filesApiProvider).downloadUrl(fileId, user.universityId);
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(SnackBar(content: Text('جارٍ التحميل: $url')));
+                    : () async {
+                        final token = await ref.read(secureStorageProvider).readToken();
+                        final url = ref.read(filesApiProvider).downloadUrl(fileId, user.universityId, token: token);
+                        final uri = Uri.parse(url);
+                        if (await canLaunchUrl(uri)) {
+                          await launchUrl(uri, mode: LaunchMode.externalApplication);
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('بدأ التحميل في المتصفح...')),
+                            );
+                          }
+                        } else {
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('تعذر فتح رابط التحميل')),
+                            );
+                          }
+                        }
                       },
                 icon: const Icon(Icons.download_outlined),
                 label: const Text('تحميل'),

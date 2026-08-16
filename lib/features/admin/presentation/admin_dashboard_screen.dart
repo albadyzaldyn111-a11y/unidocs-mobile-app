@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/network/api_client.dart';
-import 'package:unidocs_mobile/core/theme/app_tokens.dart';
-import 'package:unidocs_mobile/core/widgets/state_views.dart';
+import '../../../core/theme/app_tokens.dart';
+import '../../../core/widgets/state_views.dart';
 
 class AdminStats {
   const AdminStats({
@@ -80,9 +80,10 @@ class AdminDashboardScreen extends ConsumerWidget {
                 ],
               ),
               const SizedBox(height: AppSpacing.xl),
-              _AdminLink(icon: Icons.people_outline, label: 'المستخدمون', route: '/admin/users'),
-              _AdminLink(icon: Icons.history, label: 'سجل العمليات', route: '/admin/audit-log'),
-              _AdminLink(icon: Icons.tune, label: 'إعدادات النظام', route: '/admin/settings'),
+              const _AdminLink(icon: Icons.people_outline, label: 'إدارة المستخدمين', route: '/admin/users'),
+              const _AdminLink(icon: Icons.account_balance_outlined, label: 'إدارة الجامعات والتصنيف', route: '/admin/taxonomy'),
+              const _AdminLink(icon: Icons.history, label: 'سجل العمليات', route: '/admin/audit-log'),
+              const _AdminLink(icon: Icons.tune, label: 'إعدادات النظام', route: '/admin/settings'),
             ],
           ),
         ),

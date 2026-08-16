@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:unidocs_mobile/core/theme/app_tokens.dart';
-import 'package:unidocs_mobile/features/files/data/files_api.dart';
+import '../../../../core/theme/app_tokens.dart';
+import '../../data/files_api.dart';
 
 class FileCard extends StatelessWidget {
   const FileCard({super.key, required this.file, required this.onTap});
@@ -24,7 +24,7 @@ class FileCard extends StatelessWidget {
                 width: 44,
                 height: 44,
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.primary.withOpacity(0.1),
+                  color: theme.colorScheme.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(AppRadius.sm),
                 ),
                 child: Icon(Icons.picture_as_pdf_outlined, color: theme.colorScheme.primary),

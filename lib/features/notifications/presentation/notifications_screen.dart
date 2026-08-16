@@ -1,54 +1,10 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-import '../../../core/network/api_client.dart';
-import 'package:unidocs_mobile/core/theme/app_tokens.dart';
-import 'package:unidocs_mobile/core/widgets/state_views.dart';
-
-class AppNotification {
-  const AppNotification({
-    required this.id,
-    required this.type,
-    required this.title,
-    required this.body,
-    required this.isRead,
-    required this.createdAt,
-  });
-
-  final String id;
-  final String type;
-  final String title;
-  final String? body;
-  final bool isRead;
-  final DateTime createdAt;
-
-  factory AppNotification.fromJson(Map<String, dynamic> json) => AppNotification(
-        id: json['id'] as String,
-        type: json['type'] as String,
-        title: json['title'] as String,
-        body: json['body'] as String?,
-        isRead: json['is_read'] as bool,
-        createdAt: DateTime.parse(json['created_at'] as String),
-      );
-}
-
-class NotificationsApi {
-  NotificationsApi(this._dio);
-  final Dio _dio;
-
-  Future<List<AppNotification>> list() async {
-    final resp = await _dio.get('/api/notifications');
-    return (resp.data as List).map((e) => AppNotification.fromJson(e as Map<String, dynamic>)).toList();
-  }
-
-  Future<void> markRead(String id) => _dio.post('/api/notifications/$id/read');
-  Future<void> markAllRead() => _dio.post('/api/notifications/read-all');
-}
-
-final notificationsApiProvider = Provider<NotificationsApi>((ref) => NotificationsApi(ref.watch(apiClientProvider)));
-
-final notificationsProvider = FutureProvider.autoDispose((ref) => ref.watch(notificationsApiProvider).list());
+import '../../../core/theme/app_tokens.dart';
+import '../data/notifications_api.dart';
+import '../../../core/widgets/state_views.dart';
 
 class NotificationsScreen extends ConsumerWidget {
   const NotificationsScreen({super.key});
@@ -91,6 +47,13 @@ class NotificationsScreen extends ConsumerWidget {
                       onTap: () async {
                         await ref.read(notificationsApiProvider).markRead(n.id);
                         ref.invalidate(notificationsProvider);
+
+                        if (!context.mounted || n.relatedEntityId == null) return;
+                        if (n.relatedEntityType == 'file') {
+                          context.push('/files/${n.relatedEntityId}');
+                        } else if (n.relatedEntityType == 'upload_request') {
+                          context.push('/requests/${n.relatedEntityId}');
+                        }
                       },
                     );
                   },

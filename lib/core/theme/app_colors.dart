@@ -6,23 +6,23 @@ class AppColors {
   AppColors._();
 
   // Brand
-  static const Color primary = Color(0xFF1E4B8F); // deep academic blue
-  static const Color primaryLight = Color(0xFF3E6EB5);
-  static const Color secondary = Color(0xFFB8862E); // muted gold accent
+  static const Color primary = Color(0xFF2563EB); // vibrant academic blue from image
+  static const Color primaryLight = Color(0xFF60A5FA);
+  static const Color secondary = Color(0xFFFACC15); // bright gold from icon
 
   // Light theme surfaces
-  static const Color lightBackground = Color(0xFFF7F8FA);
+  static const Color lightBackground = Color(0xFFF8FAFC);
   static const Color lightSurface = Color(0xFFFFFFFF);
   static const Color lightCard = Color(0xFFFFFFFF);
-  static const Color lightInput = Color(0xFFF0F2F5);
-  static const Color lightBorder = Color(0xFFE2E5EA);
+  static const Color lightInput = Color(0xFFF1F5F9);
+  static const Color lightBorder = Color(0xFFE2E8F0);
 
-  // Dark theme surfaces — layered, not pure black, for clear hierarchy.
-  static const Color darkBackground = Color(0xFF14161B);
-  static const Color darkSurface = Color(0xFF1C1F26);
-  static const Color darkCard = Color(0xFF232630);
-  static const Color darkInput = Color(0xFF2A2E38);
-  static const Color darkBorder = Color(0xFF343945);
+  // Dark theme surfaces — matches the deep navy/black from the image
+  static const Color darkBackground = Color(0xFF0F172A); 
+  static const Color darkSurface = Color(0xFF1E293B);
+  static const Color darkCard = Color(0xFF1E293B);
+  static const Color darkInput = Color(0xFF1E293B);
+  static const Color darkBorder = Color(0xFF334155);
 
   // Semantic
   static const Color success = Color(0xFF2E9E5B);

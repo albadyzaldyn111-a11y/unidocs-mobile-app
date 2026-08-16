@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:unidocs_mobile/core/theme/app_tokens.dart';
-import 'package:unidocs_mobile/core/widgets/primary_button.dart';
-import 'package:unidocs_mobile/features/upload_requests/data/upload_request_api.dart';
+import '../../../core/theme/app_tokens.dart';
+import '../../../core/widgets/primary_button.dart';
+import '../data/upload_request_api.dart';
 
 class UploadRequestScreen extends ConsumerStatefulWidget {
   const UploadRequestScreen({super.key});

@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-import '../../../core/storage/secure_storage.dart';
-import 'package:unidocs_mobile/core/widgets/state_views.dart';
-import '../../auth/presentation/auth_controller.dart';
-import 'package:unidocs_mobile/features/files/data/files_api.dart';
 import '../../../core/network/api_client.dart';
+import '../../../core/widgets/state_views.dart';
+import '../../auth/presentation/auth_controller.dart';
+import '../data/files_api.dart';
 
 class PdfPreviewScreen extends ConsumerStatefulWidget {
   const PdfPreviewScreen({super.key, required this.fileId});

@@ -24,10 +24,11 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.unidocs.mobile"
-    compileSdk flutter.compileSdkVersion
-    ndkVersion flutter.ndkVersion
+    compileSdk 36
+    ndkVersion "28.2.13676358"
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
@@ -39,7 +40,7 @@ android {
     defaultConfig {
         // Change this before publishing to the Play Store.
         applicationId "com.unidocs.mobile"
-        minSdk 21
+        minSdkVersion flutter.minSdkVersion
         targetSdk 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -51,8 +52,9 @@ android {
             // out of the box. Replace with a real signing config before
             // publishing — see README "Release Signing".
             signingConfig signingConfigs.debug
-            minifyEnabled false
-            shrinkResources false
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
@@ -61,4 +63,6 @@ flutter {
     source "../.."
 }
 
-dependencies {}
+dependencies {
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
+}

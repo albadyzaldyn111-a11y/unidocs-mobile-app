@@ -82,6 +82,15 @@ class AuthController extends Notifier<AuthState> {
     }
   }
 
+  Future<void> refreshUser() async {
+    try {
+      final user = await ref.read(authApiProvider).me();
+      state = state.copyWith(user: user, isLoading: false);
+    } on DioException catch (e) {
+      state = state.copyWith(isLoading: false, error: e.error as AppException?);
+    }
+  }
+
   Future<void> logout() async {
     await ref.read(secureStorageProvider).clear();
     state = state.copyWith(clearUser: true);

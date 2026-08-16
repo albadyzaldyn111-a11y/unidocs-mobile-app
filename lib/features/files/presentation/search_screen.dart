@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:unidocs_mobile/core/theme/app_tokens.dart';
-import 'package:unidocs_mobile/core/widgets/state_views.dart';
+import '../../../core/theme/app_tokens.dart';
+import '../../../core/widgets/state_views.dart';
 import '../../auth/presentation/auth_controller.dart';
-import 'package:unidocs_mobile/features/files/data/files_api.dart';
+import '../data/files_api.dart';
 import 'widgets/file_card.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
@@ -39,7 +39,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final user = ref.watch(authControllerProvider).user;
 
     final resultsAsync = user == null

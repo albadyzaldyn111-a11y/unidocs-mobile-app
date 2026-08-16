@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/network/api_client.dart';
-import 'package:unidocs_mobile/core/theme/app_tokens.dart';
-import 'package:unidocs_mobile/core/widgets/state_views.dart';
+import '../../../core/theme/app_tokens.dart';
+import '../../../core/widgets/state_views.dart';
 
 final _auditLogProvider = FutureProvider.autoDispose((ref) async {
   final dio = ref.watch(apiClientProvider);
@@ -67,6 +67,8 @@ class AdminSettingsScreen extends ConsumerWidget {
     }
   }
 
+  bool _asBool(String? value) => value?.toLowerCase() == 'true';
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final settingsAsync = ref.watch(_adminSettingsProvider);
@@ -76,13 +78,25 @@ class AdminSettingsScreen extends ConsumerWidget {
       body: settingsAsync.when(
         data: (settings) => ListView(
           padding: const EdgeInsets.all(AppSpacing.lg),
-          children: settings.entries
-              .map((e) => _SettingTile(
-                    settingKey: e.key,
-                    value: e.value,
-                    onSave: (v) => _update(ref, context, e.key, v),
-                  ))
-              .toList(),
+          children: [
+            Text('إعدادات التشغيل العامة', style: Theme.of(context).textTheme.titleLarge),
+            const SizedBox(height: AppSpacing.sm),
+            Card(child: SwitchListTile.adaptive(
+              value: _asBool(settings['maintenance_mode']),
+              onChanged: (value) => _update(ref, context, 'maintenance_mode', value.toString()),
+              title: const Text('وضع الصيانة'),
+              subtitle: Text(settings['maintenance_mode'] == 'true' ? 'التطبيق يعرض رسالة الصيانة للمستخدمين' : 'التطبيق يعمل بشكل طبيعي'),
+            )),
+            const SizedBox(height: AppSpacing.sm),
+            _SettingTile(settingKey: 'maintenance_message', value: settings['maintenance_message'] ?? '', onSave: (v) => _update(ref, context, 'maintenance_message', v)),
+            _SettingTile(settingKey: 'system_announcement', value: settings['system_announcement'] ?? '', onSave: (v) => _update(ref, context, 'system_announcement', v)),
+            Text('سياسة الملفات', style: Theme.of(context).textTheme.titleLarge),
+            const SizedBox(height: AppSpacing.sm),
+            _SettingTile(settingKey: 'max_file_size_mb', value: settings['max_file_size_mb'] ?? '50', onSave: (v) => _update(ref, context, 'max_file_size_mb', v)),
+            _SettingTile(settingKey: 'allowed_extensions', value: settings['allowed_extensions'] ?? '', onSave: (v) => _update(ref, context, 'allowed_extensions', v)),
+            const SizedBox(height: AppSpacing.sm),
+            ExpansionTile(title: const Text('إعدادات متقدمة'), children: settings.entries.where((e) => !{'maintenance_mode', 'maintenance_message', 'system_announcement', 'max_file_size_mb', 'allowed_extensions'}.contains(e.key)).map((e) => _SettingTile(settingKey: e.key, value: e.value, onSave: (v) => _update(ref, context, e.key, v))).toList()),
+          ],
         ),
         loading: () => const LoadingView(),
         error: (e, st) => const ErrorStateView(message: 'تعذر تحميل الإعدادات'),

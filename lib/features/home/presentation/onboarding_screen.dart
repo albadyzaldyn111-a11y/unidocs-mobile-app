@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:unidocs_mobile/core/theme/app_tokens.dart';
+import '../../../core/theme/app_tokens.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});

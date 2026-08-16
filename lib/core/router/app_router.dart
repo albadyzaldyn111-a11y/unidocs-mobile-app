@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../features/admin/presentation/admin_audit_settings_screens.dart';
 import '../../features/admin/presentation/admin_dashboard_screen.dart';
 import '../../features/admin/presentation/admin_users_screen.dart';
+import '../../features/admin/presentation/admin_taxonomy_screen.dart';
 import '../../features/auth/presentation/auth_controller.dart';
 import '../../features/auth/presentation/login_screen.dart';
 import '../../features/auth/presentation/register_screen.dart';
@@ -17,6 +18,7 @@ import '../../features/home/presentation/splash_screen.dart';
 import '../../features/moderation/presentation/moderation_dashboard_screen.dart';
 import '../../features/notifications/presentation/notifications_screen.dart';
 import '../../features/profile/presentation/app_settings_screen.dart';
+import '../../features/profile/presentation/contact_support_screen.dart';
 import '../../features/profile/presentation/download_history_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/upload/presentation/my_files_screen.dart';
@@ -79,6 +81,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/upload-request', builder: (context, state) => const UploadRequestScreen()),
       GoRoute(path: '/download-history', builder: (context, state) => const DownloadHistoryScreen()),
       GoRoute(path: '/settings', builder: (context, state) => const AppSettingsScreen()),
+      GoRoute(path: '/contact-support', builder: (context, state) => const ContactSupportScreen()),
       GoRoute(path: '/moderation', builder: (context, state) => const ModerationDashboardScreen()),
       GoRoute(path: '/upload-requests', builder: (context, state) => const UploadRequestsListScreen()),
       GoRoute(
@@ -87,6 +90,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(path: '/admin', builder: (context, state) => const AdminDashboardScreen()),
       GoRoute(path: '/admin/users', builder: (context, state) => const AdminUsersScreen()),
+      GoRoute(path: '/admin/taxonomy', builder: (context, state) => const AdminTaxonomyScreen()),
       GoRoute(
         path: '/admin/users/:id',
         builder: (context, state) => AdminUserDetailsScreen(userId: state.pathParameters['id']!),

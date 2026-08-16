@@ -71,7 +71,7 @@ class AppTheme {
         centerTitle: false,
         titleTextStyle: textTheme.headlineSmall,
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: card,
         elevation: AppElevation.card,
         shape: RoundedRectangleBorder(
@@ -85,35 +85,39 @@ class AppTheme {
         fillColor: input,
         contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.md),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppRadius.md),
-          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          borderSide: BorderSide(color: border, width: 1),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppRadius.md),
-          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          borderSide: BorderSide(color: border, width: 1),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppRadius.md),
-          borderSide: BorderSide(color: scheme.primary, width: 1.5),
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          borderSide: BorderSide(color: scheme.primary, width: 2),
         ),
+        labelStyle: textTheme.bodyMedium?.copyWith(color: textSecondary),
+        floatingLabelStyle: textTheme.bodyMedium?.copyWith(color: scheme.primary),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: scheme.primary,
           foregroundColor: Colors.white,
-          minimumSize: const Size.fromHeight(52),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.md)),
-          textStyle: textTheme.labelLarge?.copyWith(color: Colors.white),
+          minimumSize: const Size.fromHeight(56),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+          textStyle: textTheme.titleMedium?.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+          elevation: 0,
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          minimumSize: const Size.fromHeight(52),
-          side: BorderSide(color: border),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.md)),
+          minimumSize: const Size.fromHeight(56),
+          side: BorderSide(color: border, width: 1.5),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+          textStyle: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
       ),
-      dialogTheme: DialogTheme(
+      dialogTheme: DialogThemeData(
         backgroundColor: card,
         elevation: AppElevation.dialog,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),

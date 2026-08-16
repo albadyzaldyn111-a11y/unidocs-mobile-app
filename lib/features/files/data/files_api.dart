@@ -102,8 +102,8 @@ class FilesApi {
   String previewUrl(String fileId, String universityId) =>
       '${_dio.options.baseUrl}/api/files/$fileId/preview?university_id=$universityId';
 
-  String downloadUrl(String fileId, String universityId) =>
-      '${_dio.options.baseUrl}/api/files/$fileId/download?university_id=$universityId';
+  String downloadUrl(String fileId, String universityId, {String? token}) =>
+      '${_dio.options.baseUrl}/api/files/$fileId/download?university_id=$universityId${token != null ? '&token=$token' : ''}';
 }
 
 final filesApiProvider = Provider<FilesApi>((ref) => FilesApi(ref.watch(apiClientProvider)));

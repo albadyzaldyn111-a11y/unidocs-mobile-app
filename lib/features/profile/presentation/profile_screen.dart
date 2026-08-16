@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:unidocs_mobile/core/theme/app_tokens.dart';
+import '../../../core/theme/app_tokens.dart';
 import '../../auth/domain/app_user.dart';
 import '../../auth/presentation/auth_controller.dart';
 
@@ -23,7 +23,7 @@ class ProfileScreen extends ConsumerWidget {
         children: [
           CircleAvatar(
             radius: 40,
-            backgroundColor: theme.colorScheme.primary.withOpacity(0.15),
+            backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.15),
             child: Text(
               user.fullName.characters.first,
               style: theme.textTheme.displayLarge?.copyWith(color: theme.colorScheme.primary),
@@ -45,6 +45,12 @@ class ProfileScreen extends ConsumerWidget {
             title: const Text('الإعدادات'),
             trailing: const Icon(Icons.chevron_left),
             onTap: () => context.push('/settings'),
+          ),
+          ListTile(
+            leading: const Icon(Icons.support_agent_outlined),
+            title: const Text('التواصل مع المطور'),
+            trailing: const Icon(Icons.chevron_left),
+            onTap: () => context.push('/contact-support'),
           ),
           if (user.role == UserRole.student)
             ListTile(

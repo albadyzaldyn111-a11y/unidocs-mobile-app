@@ -1,12 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../core/errors/app_exception.dart';
 import '../../../core/network/api_client.dart';
-import 'package:unidocs_mobile/core/theme/app_tokens.dart';
-import 'package:unidocs_mobile/core/widgets/state_views.dart';
+import '../../../core/theme/app_tokens.dart';
+import '../../../core/widgets/state_views.dart';
 import '../../files/data/files_api.dart';
 
 class ModerationApi {
@@ -91,7 +90,7 @@ class _PendingFileTile extends ConsumerWidget {
         );
       },
     );
-    if (reason == null || reason.trim().isEmpty) return;
+    if (reason == null || reason.trim().isEmpty || !context.mounted) return;
     await _tryLockThenAct(context, ref, () => ref.read(moderationApiProvider).reject(file.id, reason));
   }
 

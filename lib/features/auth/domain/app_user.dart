@@ -1,8 +1,7 @@
 enum UserRole { student, verifiedUploader, moderator, administrator }
 
 UserRole userRoleFromString(String value) {
-  final normalized = value.toLowerCase();
-  switch (normalized) {
+  switch (value) {
     case 'verified_uploader':
       return UserRole.verifiedUploader;
     case 'moderator':
@@ -42,5 +41,5 @@ class AppUser {
 
   bool get canUpload => role != UserRole.student;
   bool get canModerate => role == UserRole.moderator || role == UserRole.administrator;
-  bool get isAdmin => role == UserRole.administrator || email.toLowerCase() == 'admin@unidocs.com';
+  bool get isAdmin => role == UserRole.administrator;
 }
